@@ -1,2 +1,3 @@
 # s3-app-configure-action
-Github action to help syncronize configuration files to an s3 bucket
+
+GitHub action to help synchronize configuration files to an s3 bucket
