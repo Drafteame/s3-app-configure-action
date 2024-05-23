@@ -1,5 +1,5 @@
 import core from '@actions/core';
-import { isEmpty } from '../utils/lo.js';
+import isEmptyInput from 'is-empty-input';
 
 /**
  * Search and retrieve for a string input, in case that not exists return a default value
@@ -12,7 +12,7 @@ import { isEmpty } from '../utils/lo.js';
 export const getString = (input, defaultValue = '') => {
   let val = core.getInput(input);
 
-  if (isEmpty(val)) {
+  if (isEmptyInput(val)) {
     return defaultValue;
   }
 
@@ -30,11 +30,11 @@ export const getString = (input, defaultValue = '') => {
 export const getBoolean = (input, defaultValue = false) => {
   let val = core.getInput(input);
 
-  if (isEmpty(val)) {
+  if (isEmptyInput(val)) {
     return defaultValue;
   }
 
-  return val.toLowerCase().trim() == 'true';
+  return val.toLowerCase().trim() === 'true';
 };
 
 /**
@@ -48,7 +48,7 @@ export const getBoolean = (input, defaultValue = false) => {
 export const getNumber = (input, defaultValue = 0) => {
   let val = core.getInput(input);
 
-  if (isEmpty(val)) {
+  if (isEmptyInput(val)) {
     return defaultValue;
   }
 
