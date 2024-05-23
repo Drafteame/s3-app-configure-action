@@ -104,7 +104,7 @@ export default class Action {
     await this.s3.createFile(
       this.inputs.bucket,
       this.inputs.destination,
-      JSON.stringify(this.newConfig)
+      this.oldConfigParser.stringify(this.newConfig)
     );
   }
 

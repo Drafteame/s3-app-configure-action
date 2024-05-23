@@ -19,10 +19,11 @@ process of keeping configuration files up-to-date across your S3 storage.
 | `aws_region`     | AWS Region                                                                                            | false    | `us-east-1` |
 | `dry_run`        | Do not create any persistent changes over the configurations and just show an overview of the changes | false    | false       |
 
-## Runs
+## Supported formats
 
-- **Using**: docker
-- **Image**: Dockerfile
+- JSON
+- YAML
+- TOML
 
 ## Example Usage
 
