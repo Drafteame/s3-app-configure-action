@@ -3,6 +3,10 @@ import core from '@actions/core';
 import * as inputs from './src/inputs/index.js';
 import Action from './src/action.js';
 
+/**
+ * Get the input parameters required for the action.
+ * @returns {{bucket: string, awsRegion: string, awsAccessKey: string, dryRun: boolean, destination: string, source: string, awsSecretKey: string}}
+ */
 const getInputs = () => {
   return {
     bucket: inputs.getString('bucket'),
@@ -15,6 +19,10 @@ const getInputs = () => {
   };
 };
 
+/**
+ * Print the differences between the old and new configurations.
+ * @param diffs
+ */
 const printDifferences = (diffs) => {
   core.info('Configuration differences');
 
@@ -31,6 +39,10 @@ const printDifferences = (diffs) => {
   });
 };
 
+/**
+ * Main function.
+ * @returns {Promise<void>}
+ */
 const main = async () => {
   const action = new Action(getInputs());
 

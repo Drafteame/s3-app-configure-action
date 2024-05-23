@@ -1,8 +1,19 @@
 import isEmptyInput from 'is-empty-input';
 
 import * as files from './utils/files.js';
+import Parser from './parser/index.js';
 import Client from './aws/s3.js';
 
+/**
+ * Action class that performs the main logic of the action.
+ *
+ * @property {Object} inputs - The input parameters required for the action.
+ * @property {Client} s3 - An S3 client instance.
+ * @property {Object} oldConfig - The old configuration object.
+ * @property {Object} newConfig - The new configuration object.
+ * @property {Parser} oldConfigParser - The parser instance for the old configuration.
+ * @property {Parser} newConfigParser - The parser instance for the new configuration.
+ */
 export default class Action {
   /**
    * Constructor for the Action class.
@@ -34,6 +45,11 @@ export default class Action {
 
     this.oldConfig = {};
     this.newConfig = {};
+
+    this.oldConfigParser = null;
+    this.newConfigParser = null;
+
+    this.initParsers();
   }
 
   /**
@@ -88,7 +104,7 @@ export default class Action {
     await this.s3.createFile(
       this.inputs.bucket,
       this.inputs.destination,
-      JSON.stringify(this.newConfig)
+      this.oldConfigParser.stringify(this.newConfig)
     );
   }
 
@@ -154,7 +170,7 @@ export default class Action {
       this.inputs.destination
     );
 
-    this.oldConfig = JSON.parse(content.toString());
+    this.oldConfig = this.oldConfigParser.parse(content.toString());
   }
 
   /**
@@ -177,7 +193,7 @@ export default class Action {
    */
   loadNewConfig() {
     const content = files.readContent(this.inputs.source);
-    this.newConfig = JSON.parse(content);
+    this.newConfig = this.newConfigParser.parse(content);
   }
 
   /**
@@ -195,5 +211,16 @@ export default class Action {
         throw new Error(`Input '${input}' is empty.`);
       }
     });
+  }
+
+  /**
+   * Initializes the oldConfigParser and newConfigParser instances based on the source and destination file formats.
+   */
+  initParsers() {
+    const sourceFormat = files.extractFormat(this.inputs.source);
+    const destinationFormat = files.extractFormat(this.inputs.destination);
+
+    this.oldConfigParser = new Parser(sourceFormat);
+    this.newConfigParser = new Parser(destinationFormat);
   }
 }
