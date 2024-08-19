@@ -1,6 +1,6 @@
 {
   "name": "s3-app-configure-action",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
   "description": "Github action to help synchronize configuration files to an s3 bucket",
   "main": "index.js",
